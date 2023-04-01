@@ -41,4 +41,4 @@ User.sync({ force: false })
     console.log(`Erro ao sincronizar a tabela de usuários: ${error}`);
   });
 
-module.exports = User;
+module.exports = { User, Role };

@@ -14,18 +14,19 @@ const Role = sequelize.define("Role", {
   },
 });
 
-Role.sync()
+Role.sync({ force: false })
   .then(async () => {
     // Verificar se a role "Admin" já existe
     const adminRole = await Role.findOne({ where: { name: "Admin" } });
+
     if (!adminRole) {
-      Role.create({ name: "Admin" });
+      await Role.create({ name: "Admin" });
     }
 
     // Verificar se a role "Usuário" já existe
     const userRole = await Role.findOne({ where: { name: "Usuário" } });
     if (!userRole) {
-      Role.create({ name: "Usuário" });
+      await Role.create({ name: "Usuário" });
     }
   })
   .catch((error) => {

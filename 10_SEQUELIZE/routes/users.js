@@ -1,13 +1,13 @@
 // 4 - criando usuários
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
+const { User, Role } = require("../models/user");
 
 // 6 - busca de usuarios
 const { Op } = require("sequelize");
 
 // 11 - adicionando dado relacionado
-const Role = require("../models/Role");
+// importar no Model de usuarios
 
 // router.post("/", (req, res) => {
 //   const { name, salary, profession, is_working } = req.body;
@@ -156,6 +156,25 @@ router.put("/:id", (req, res) => {
       console.log(error);
       res.status(500).json({ message: "Erro ao atualizar usuário" });
     });
+});
+
+// 12 - user com role
+router.get("/:id/role", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.id },
+      include: Role,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    return res.json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Erro ao buscar usuário" });
+  }
 });
 
 module.exports = router;
